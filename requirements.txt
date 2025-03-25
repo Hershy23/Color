@@ -1,0 +1,10 @@
+Flask
+Flask-CORS
+numpy
+Pillow
+tensorflow
+torch
+opencv-python
+scikit-learn
+requests
+gunicorn

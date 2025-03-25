@@ -1,0 +1,67 @@
+/* General styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to right, #ff9a9e, #fad0c4);
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+/* Main container */
+.container {
+    width: 50%;
+    margin: 5% auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Upload button */
+.upload-box {
+    margin: 20px 0;
+    padding: 10px;
+    background: #ffe3e3;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Hide default input */
+input[type="file"] {
+    display: none;
+}
+
+/* Image preview */
+#imagePreview {
+    margin-top: 10px;
+}
+
+#preview {
+    max-width: 100%;
+    height: auto;
+    display: none;
+}
+
+/* Predict button */
+#predictBtn {
+    background: #ff7675;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+#predictBtn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+/* Result box */
+#result {
+    margin-top: 20px;
+    font-size: 20px;
+    color: #ff4757;
+}
