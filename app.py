@@ -1,8 +1,11 @@
 from flask import Flask, request, render_template, jsonify
+import os
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
+
 import tensorflow as tf
 import numpy as np
 import cv2
-import os
+
 import logging
 import gdown
 
