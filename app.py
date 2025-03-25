@@ -12,8 +12,7 @@ logger = logging.getLogger(__name__)
 
 # Model settings
 MODEL_PATH = "model.h5"
-FILE_ID =  "1dtxCw1PCIQcbfkb2rgd6vr4Zpv-Y4Qv5"
- # Replace with your actual Google Drive file ID
+FILE_ID = "1dtxCw1PCIQcbfkb2rgd6vr4Zpv-Y4Qv5"  # Replace with your actual Google Drive file ID
 
 def download_model():
     """Downloads the model from Google Drive if it doesn't exist."""
@@ -84,4 +83,4 @@ def predict():
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=port, debug=True)
