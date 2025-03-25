@@ -8,6 +8,8 @@ import cv2
 
 import logging
 import gdown
+from flask_cors import CORS
+CORS(app)
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
