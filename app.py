@@ -3,7 +3,6 @@ import tensorflow as tf
 import numpy as np
 import cv2
 import os
-import gdown
 import logging
 
 # Configure logging
@@ -12,27 +11,19 @@ logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
-# Google Drive file ID
-FILE_ID = "1dtxCw1PCIQcbfkb2rgd6vr4Zpv-Y4Qv5"
+# Local model path
 MODEL_PATH = "model.h5"
 
-def download_model():
-    if not os.path.exists(MODEL_PATH):
-        logger.info("Downloading model from Google Drive...")
-        try:
-            gdown.download(f"https://drive.google.com/uc?id={FILE_ID}", MODEL_PATH, quiet=False)
-            logger.info("Model downloaded successfully")
-        except Exception as e:
-            logger.error(f"Failed to download model: {str(e)}")
-            raise
-
-# Download model at startup
-try:
-    download_model()
-    model = tf.keras.models.load_model(MODEL_PATH)
-    logger.info("Model loaded successfully")
-except Exception as e:
-    logger.error(f"Model loading failed: {str(e)}")
+# Load the model at startup
+if os.path.exists(MODEL_PATH):
+    try:
+        model = tf.keras.models.load_model(MODEL_PATH)
+        logger.info("Model loaded successfully")
+    except Exception as e:
+        logger.error(f"Model loading failed: {str(e)}")
+        model = None
+else:
+    logger.error("Model file not found!")
     model = None
 
 @app.route("/")
