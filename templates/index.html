@@ -9,25 +9,10 @@
 <body>
     <div class="container">
         <h1>Skin Tone Detector</h1>
-        <p>Upload an image to analyze your skin tone</p>
-
-        <div class="upload-box">
-            <input type="file" id="imageUpload" accept="image/*">
-            <label for="imageUpload">Choose Image</label>
-        </div>
-
-        <div id="imagePreview">
-            <img id="preview" src="" alt="Preview">
-        </div>
-
-        <button id="predictBtn" disabled>Detect Skin Tone</button>
-
-        <div id="result">
-            <h2>Predicted Skin Tone:</h2>
-            <p id="predictionText">No prediction yet</p>
-        </div>
+        <input type="file" id="fileInput">
+        <button onclick="uploadImage()">Predict</button>
+        <div id="result"></div>
     </div>
-
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
