@@ -41,5 +41,8 @@ function uploadImage() {
             reader.readAsDataURL(file);
         }
     })
-    .catch(error => console.error("Error:", error));
+    .catch(error => {
+        console.error("Error:", error);
+        document.getElementById("result").innerText = "Prediction failed!";
+    });
 }
