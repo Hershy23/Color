@@ -1,27 +1,13 @@
-document.getElementById("imageUpload").addEventListener("change", function (event) {
-    const file = event.target.files[0];
-
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            document.getElementById("preview").src = e.target.result;
-            document.getElementById("preview").style.display = "block";
-            document.getElementById("predictBtn").disabled = false;
-        };
-        reader.readAsDataURL(file);
-    }
-});
-
-document.getElementById("predictBtn").addEventListener("click", function () {
-    const fileInput = document.getElementById("imageUpload");
-    const file = fileInput.files[0];
+function uploadImage() {
+    let fileInput = document.getElementById("fileInput");
+    let file = fileInput.files[0];
 
     if (!file) {
-        alert("Please select an image first!");
+        alert("Please select an image!");
         return;
     }
 
-    const formData = new FormData();
+    let formData = new FormData();
     formData.append("file", file);
 
     fetch("/predict", {
@@ -31,10 +17,17 @@ document.getElementById("predictBtn").addEventListener("click", function () {
     .then(response => response.json())
     .then(data => {
         if (data.error) {
-            document.getElementById("predictionText").innerText = data.error;
+            document.getElementById("result").innerText = "Error: " + data.error;
         } else {
-            document.getElementById("predictionText").innerText = data.skin_tone;
+            document.getElementById("result").innerText = "Predicted Skin Tone: " + data.skin_tone;
+            let reader = new FileReader();
+            reader.onload = function(e) {
+                let img = document.getElementById("preview");
+                img.src = e.target.result;
+                img.style.display = "block";
+            };
+            reader.readAsDataURL(file);
         }
     })
     .catch(error => console.error("Error:", error));
-});
+}
