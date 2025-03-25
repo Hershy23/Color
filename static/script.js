@@ -20,6 +20,18 @@ function uploadImage() {
             document.getElementById("result").innerText = "Error: " + data.error;
         } else {
             document.getElementById("result").innerText = "Predicted Skin Tone: " + data.skin_tone;
+            
+            let colors = {
+                "light": "#FFDFC4",
+                "mid-light": "#E1B899",
+                "mid-dark": "#AE734A",
+                "dark": "#5C3A21"
+            };
+
+            let colorBox = document.getElementById("colorBox");
+            colorBox.style.backgroundColor = colors[data.skin_tone];
+            colorBox.style.display = "block";
+
             let reader = new FileReader();
             reader.onload = function(e) {
                 let img = document.getElementById("preview");
