@@ -1,5 +1,6 @@
 import logging
 import os
+import requests
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import tensorflow as tf
@@ -11,9 +12,20 @@ CORS(app)
 
 logging.basicConfig(level=logging.DEBUG)  # ✅ Enable debugging
 
-# ✅ Load the model
+# ✅ Define Model URL (Replace with your actual GitHub release URL)
+MODEL_URL = "https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPO/releases/download/v2.0/model.h5"
+MODEL_PATH = "model.h5"
+
+# ✅ Download Model if Not Exists
+if not os.path.exists(MODEL_PATH):
+    logging.info("Downloading model...")
+    response = requests.get(MODEL_URL)
+    with open(MODEL_PATH, "wb") as file:
+        file.write(response.content)
+    logging.info("Model downloaded successfully!")
+
+# ✅ Load Model
 try:
-    MODEL_PATH = "model.h5"  # Update this if needed
     model = tf.keras.models.load_model(MODEL_PATH)
     logging.info("Model loaded successfully!")
 except Exception as e:
@@ -50,4 +62,5 @@ def predict():
         return jsonify({"error": "Prediction failed"}), 500
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    PORT = int(os.environ.get("PORT", 10000))  # Use Render's PORT
+    app.run(host="0.0.0.0", port=PORT, debug=True)
