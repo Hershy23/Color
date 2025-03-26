@@ -9,6 +9,7 @@ import cv2
 import logging
 import gdown
 from flask_cors import CORS
+app = Flask(__name__) 
 CORS(app)
 
 # Configure logging
