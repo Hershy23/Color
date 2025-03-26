@@ -13,7 +13,7 @@ CORS(app)
 logging.basicConfig(level=logging.DEBUG)  # ✅ Enable debugging
 
 # ✅ Define Model URL (Replace with your actual GitHub release URL)
-MODEL_URL = "https://github.com/Hershy23/Color/releases/download/v2.0/model.h5"
+MODEL_URL = "https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPO/releases/download/v2.0/model.h5"
 MODEL_PATH = "model.h5"
 
 # ✅ Download Model if Not Exists
@@ -62,5 +62,5 @@ def predict():
         return jsonify({"error": "Prediction failed"}), 500
 
 if __name__ == "__main__":
-    PORT = int(os.environ.get("PORT", 10000))  # Use Render's PORT
-    app.run(host="0.0.0.0", port=PORT, debug=True)
+    PORT = int(os.environ.get("PORT", 5000))  # ✅ Use PORT from Render, default to 5000
+    app.run(host="0.0.0.0", port=PORT, debug=False)  # ✅ Ensure proper binding
