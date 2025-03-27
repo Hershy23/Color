@@ -2,12 +2,14 @@ import logging
 import os
 import requests
 from flask import Flask, request, jsonify, render_template
-from flask_cors import CORS
+from flask_cors import CORS  # This import was missing
 import tensorflow as tf
 import numpy as np
 from PIL import Image
 import io
 from waitress import serve
+
+# Rest of your existing app.py code remains the same...
 
 # Initialize Flask app
 app = Flask(__name__)
