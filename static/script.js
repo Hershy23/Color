@@ -5,16 +5,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const predictionText = document.getElementById('predictionText');
     const loader = document.querySelector('.loader');
 
-    // Skin tone labels
-    const skinTones = [
-        "Very Light (Type I)",
-        "Light (Type II)",
-        "Medium (Type III)",
-        "Olive (Type IV)",
-        "Brown (Type V)",
-        "Dark (Type VI)"
-    ];
-
     fileInput.addEventListener('change', function(event) {
         const file = event.target.files[0];
         if (file) {
@@ -39,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Show loading state
         predictBtn.disabled = true;
         loader.style.display = "block";
-        predictionText.innerHTML = '<span class="analyzing">Analyzing skin tone...</span>';
+        predictionText.innerHTML = '<span class="analyzing">Analyzing...</span>';
         
         try {
             const formData = new FormData();
@@ -50,37 +40,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: formData
             });
 
-            // First check if we got any response at all
-            if (!response) {
-                throw new Error('No response from server');
-            }
-
-            // Then check if response is OK
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({
-                    error: `Server error: ${response.status} ${response.statusText}`
-                }));
-                throw new Error(errorData.error || 'Request failed');
-            }
-
-            // Finally try to parse JSON
             const data = await response.json();
             
-            if (!data.success) {
-                throw new Error(data.error || 'Prediction failed');
+            if (!response.ok || !data.success) {
+                throw new Error(data.message || 'Prediction failed');
             }
 
             // Display results
             const confidencePercent = (data.confidence * 100).toFixed(1);
             predictionText.innerHTML = `
-                <strong>${skinTones[data.prediction] || "Unknown Type"}</strong>
-                <div class="confidence">Confidence: ${confidencePercent}%</div>
+                <strong>${data.label}</strong>
+                <div class="confidence">${confidencePercent}% confidence</div>
                 <div class="tips">${getSkinCareTips(data.prediction)}</div>
             `;
 
         } catch (error) {
-            console.error('Prediction error:', error);
-            showError(error.message || 'An unknown error occurred');
+            console.error('Error:', error);
+            showError(error.message);
         } finally {
             predictBtn.disabled = false;
             loader.style.display = "none";
