@@ -13,7 +13,7 @@ CORS(app)
 logging.basicConfig(level=logging.DEBUG)  # ✅ Enable debugging
 
 # ✅ Define Model URL (Replace with your actual GitHub release URL)
-MODEL_URL = "https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPO/releases/download/v2.0/model.h5"
+MODEL_URL = "https://github.com/Hershy23/Color/releases/download/v2.0/model.h5"
 MODEL_PATH = "model.h5"
 
 # ✅ Download Model if Not Exists
