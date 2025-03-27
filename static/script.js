@@ -24,11 +24,16 @@ document.getElementById("predictBtn").addEventListener("click", function () {
     const formData = new FormData();
     formData.append("file", file);
 
-    fetch("]https://color-2-5pxn.onrender.com/predict", {  // Update this URL
-    method: "POST",
-    body: formData
-})
-.then(response => response.json())
-.then(data => console.log(data))
-.catch(error => console.error("Error:", error));
-
+    fetch("https://color-2-5pxn.onrender.com/predict", { // Fixed URL
+        method: "POST",
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("HTTP error! Status: " + response.status);
+        }
+        return response.json();
+    })
+    .then(data => console.log(data))
+    .catch(error => console.error("Error:", error));
+});
