@@ -3,6 +3,6 @@ tensorflow-cpu
 pillow
 numpy
 waitress
-gunicorn
 requests
-flask-cors # Add this line
+flask-cors
+gunicorn
