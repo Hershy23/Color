@@ -15,25 +15,36 @@ document.getElementById("imageUpload").addEventListener("change", function (even
 document.getElementById("predictBtn").addEventListener("click", function () {
     const fileInput = document.getElementById("imageUpload");
     const file = fileInput.files[0];
+    const predictionText = document.getElementById("predictionText");
 
     if (!file) {
-        alert("Please select an image first!");
+        predictionText.innerText = "Please select an image first!";
         return;
     }
+
+    predictionText.innerText = "Processing...";
 
     const formData = new FormData();
     formData.append("file", file);
 
-    fetch("https://color-2-5pxn.onrender.com/predict", { // Fixed URL
+    // ✅ Use relative path or ensure correct URL
+    fetch("/predict", {
         method: "POST",
         body: formData
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error("HTTP error! Status: " + response.status);
+            throw new Error("Server error");
         }
         return response.json();
     })
-    .then(data => console.log(data))
-    .catch(error => console.error("Error:", error));
+    .then(data => {
+        // Update with your actual prediction handling
+        const skinTones = ["Light", "Medium-Light", "Medium-Dark", "Dark"];
+        predictionText.innerText = skinTones[data.prediction] || "Unknown";
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        predictionText.innerText = "Error: " + error.message;
+    });
 });
