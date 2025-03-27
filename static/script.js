@@ -1,50 +1,64 @@
-document.getElementById("imageUpload").addEventListener("change", function (event) {
+document.getElementById("imageUpload").addEventListener("change", function(event) {
     const file = event.target.files[0];
-
+    const preview = document.getElementById("preview");
+    const predictBtn = document.getElementById("predictBtn");
+    
     if (file) {
         const reader = new FileReader();
-        reader.onload = function (e) {
-            document.getElementById("preview").src = e.target.result;
-            document.getElementById("preview").style.display = "block";
-            document.getElementById("predictBtn").disabled = false;
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+            preview.style.display = "block";
+            predictBtn.disabled = false;
         };
         reader.readAsDataURL(file);
     }
 });
 
-document.getElementById("predictBtn").addEventListener("click", function () {
+document.getElementById("predictBtn").addEventListener("click", async function() {
     const fileInput = document.getElementById("imageUpload");
     const file = fileInput.files[0];
     const predictionText = document.getElementById("predictionText");
-
+    const preview = document.getElementById("preview");
+    
     if (!file) {
-        predictionText.innerText = "Please select an image first!";
+        predictionText.textContent = "Please select an image first!";
         return;
     }
-
-    predictionText.innerText = "Processing...";
-
-    const formData = new FormData();
-    formData.append("file", file);
-
-    // ✅ Use relative path or ensure correct URL
-    fetch("/predict", {
-        method: "POST",
-        body: formData
-    })
-    .then(response => {
+    
+    predictionText.textContent = "Analyzing...";
+    preview.style.opacity = "0.7";  // Visual feedback
+    
+    try {
+        const formData = new FormData();
+        formData.append("file", file);
+        
+        // Use relative path for local development
+        // For production, you might need the full URL
+        const response = await fetch("/predict", {
+            method: "POST",
+            body: formData
+        });
+        
         if (!response.ok) {
-            throw new Error("Server error");
+            const error = await response.json();
+            throw new Error(error.error || "Request failed");
         }
-        return response.json();
-    })
-    .then(data => {
-        // Update with your actual prediction handling
+        
+        const data = await response.json();
+        
+        // Map predictions to human-readable labels
         const skinTones = ["Light", "Medium-Light", "Medium-Dark", "Dark"];
-        predictionText.innerText = skinTones[data.prediction] || "Unknown";
-    })
-    .catch(error => {
-        console.error("Error:", error);
-        predictionText.innerText = "Error: " + error.message;
-    });
+        const confidence = (data.confidence * 100).toFixed(1);
+        
+        predictionText.innerHTML = `
+            <strong>${skinTones[data.prediction] || "Unknown"}</strong>
+            <br><small>${confidence}% confidence</small>
+        `;
+        
+    } catch (error) {
+        console.error("Prediction error:", error);
+        predictionText.textContent = `Error: ${error.message}`;
+    } finally {
+        preview.style.opacity = "1";
+    }
 });
