@@ -112,3 +112,26 @@ label[for="imageUpload"]:hover {
 .hidden {
     display: none;
 }
+/* Add to your style.css */
+.error {
+    color: #ff4757;
+    font-weight: bold;
+}
+
+.analyzing {
+    color: #3498db;
+}
+
+.confidence {
+    font-size: 0.9em;
+    color: #57606f;
+    margin-top: 5px;
+}
+
+.tips {
+    margin-top: 10px;
+    padding: 10px;
+    background: #f1f2f6;
+    border-radius: 5px;
+    font-size: 0.85em;
+}
